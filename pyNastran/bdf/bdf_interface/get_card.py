@@ -317,7 +317,7 @@ class GetCard(GetMethods):
             if isinstance(ids, bool):
                 continue
 
-            for idi in ids:
+            for idi in np.unique(ids):
                 try:
                     card = slot[idi]
                 except KeyError:
