@@ -934,6 +934,18 @@ class MAT2(AnisotropicMaterial):
         Sc = double_or_blank(card, 15, 'Sc') # or blank?
         Ss = double_or_blank(card, 16, 'Ss') # or blank?
         mcsid = integer_or_blank(card, 17, 'mcsid')
+        # Nastran MAT2 cards can be up to 24 fields long but pyNastran only recognises
+        # the first 18 fields. In the case where fields 18 to 24 are 0 we ignore
+        # them, otherwise we throw an error.
+        if 18 < len(card) <= 24:
+            extra_fields = [np.double(field) for field in card[18:]]
+            if np.isclose(extra_fields, 0).all():
+                card = card[:18]
+            else:
+                raise ValueError('PyNastran cannot handle MAT2 cards with fields 19-24 != 0: ')
+        elif len(card) > 24:
+            raise ValueError('MAT2 cards are expected to a maximum of 24 fields long')
+
         assert len(card) <= 18, 'len(MAT2 card) = %i\ncard=%s' % (len(card), card)
         return MAT2(mid, G11, G12, G13, G22, G23, G33,
                     rho, a1, a2, a3, tref, ge, St, Sc, Ss, mcsid,

@@ -52,7 +52,7 @@ class CaseControlDeck:
         # method to avoid modifying the original state.
         state = self.__dict__.copy()
         # Remove the unpicklable entries.
-        del state['log']
+        state.pop('log', None)
         return state
 
     def __init__(self, lines: List[str], log: Optional[Any]=None) -> None:
