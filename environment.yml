@@ -1,0 +1,10 @@
+name: pynastran
+dependencies:
+  - python < 3.9
+  - pyside
+  - vtk
+  - pip
+  - pip:
+    - -r ./requirements.txt
+channels:
+  - conda-forge
