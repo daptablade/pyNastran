@@ -5658,6 +5658,26 @@ def dscmcol_dresp1(responses: Dict[int, Dict[str, Any]],
                         'subcase': subcase, 'freq': freq, 'randps': randps, 'seid': seid}
             #print(f'  grid={grid} comp={comp} subcase={subcase} freq={freq} '
                   #f'randps={randps} seid={seid} (PSD acceleration)')
+        elif response_type == 74:
+            # RTYPE=74 AEMONP1
+            # 4 GRID    I Grid identification number
+            # 5 COMP    I PSD acceleration component number
+            # 6 SUBCASE I Subcase identification number
+            # 7 NAME?   ? MONTPT1 name
+            # 8 ??      I not used
+            # 9 SEID?   I Superelement identification number
+            grid = ints[idata + 3]
+            comp = ints[idata + 4]
+            subcase = ints[idata + 5]
+            seid = ints[idata + 8]
+            response = {
+                "name": "aero monitoring point",
+                "grid": grid,
+                "component": comp,
+                "subcase": subcase,
+                "seid": seid,
+            }
+            # print(f'  grid={grid} comp={comp} subcase={subcase} seid={seid} (AEMONP1)')       
         else:  # pragma: no cover
             print(f'internal_response_id={internal_response_id} '
                   f'external_response_id={external_response_id} response_type={response_type}')
